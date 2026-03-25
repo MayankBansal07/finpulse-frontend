@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="FinPulse - Expert Chartered Accountant Services for all your tax, audit, and advisory needs.">
+    <title>FinPulse | Expert CA Services</title>
+    <!-- Modern Typography: Outfit for headers, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/lucide@latest/dist/umd/lucide.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header id="header" class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <span class="logo-mark"></span>
+                FinPulse
+            </div>
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#testimonials">Testimonials</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="#contact" class="btn btn-primary nav-cta">Book Consultation</a>
+                <button id="loginBtn" class="btn btn-outline nav-cta-secondary">
+                    <i data-lucide="user"></i> Login
+                </button>
+                <div id="userProfile" class="user-profile hidden">
+                    <span id="userName" class="user-name"></span>
+                    <button id="logoutBtn" class="btn btn-ghost"><i data-lucide="log-out"></i></button>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Toggle Menu">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-bg-accent"></div>
+        <div class="container hero-content">
+            <div class="hero-text fade-in">
+                <span class="badge">Trusted Financial Partners</span>
+                <h1><span class="gradient-text">Precision in Every Number.<br>Peace of Mind for You.</span></h1>
+                <p>Expert Chartered Accountant services tailored to optimize your tax strategy, ensure compliance, and
+                    drive financial growth for your business.</p>
+                <div class="hero-actions">
+                    <a href="#contact" class="btn btn-primary">Get Started Now</a>
+                    <a href="#services" class="btn btn-secondary">Explore Services</a>
+                </div>
+            </div>
+            <div class="hero-visual fade-in fade-delay-1">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon"><i data-lucide="trending-up"></i></div>
+                    <div class="stat-info">
+                        <h3>98%</h3>
+                        <p>Client Retention</p>
+                    </div>
+                </div>
+                <div class="glass-card stat-card card-2">
+                    <div class="stat-icon"><i data-lucide="shield-check"></i></div>
+                    <div class="stat-info">
+                        <h3>100%</h3>
+                        <p>Tax Compliance</p>
+                    </div>
+                </div>
+                <div class="decorative-circle"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="financial-bg-animated">
+            <div class="ledger-pattern"></div>
+            <div id="servicesIcons" class="floating-elements-container"></div>
+            <canvas id="servicesCanvas" class="network-canvas"></canvas>
+        </div>
+        <div class="container">
+            <div class="section-header text-center fade-in">
+                <span class="subtitle">Our Expertise</span>
+                <h2><span class="gradient-text">Comprehensive CA Services</span></h2>
+                <p>We provide a full spectrum of financial and regulatory services designed to support businesses of all
+                    sizes.</p>
+            </div>
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card fade-in">
+                    <div class="icon-wrapper"><i data-lucide="calculator"></i></div>
+                    <h3><span class="gradient-text">Tax Preparation & Filing</span></h3>
+                    <p>Accurate, timely tax planning and filing for individuals and corporations. Minimize your
+                        liability legally and efficiently.</p>
+                    <a href="#contact" class="learn-more">Learn more <i data-lucide="arrow-right"></i></a>
+                </div>
+                <!-- Service 2 -->
+                <div class="service-card fade-in fade-delay-1">
+                    <div class="icon-wrapper"><i data-lucide="file-search"></i></div>
+                    <h3><span class="gradient-text">Audit & Assurance</span></h3>
+                    <p>Thorough and independent audits that provide stakeholders with confidence in your financial
+                        statements and internal controls.</p>
+                    <a href="#contact" class="learn-more">Learn more <i data-lucide="arrow-right"></i></a>
+                </div>
+                <!-- Service 3 -->
+                <div class="service-card fade-in fade-delay-2">
+                    <div class="icon-wrapper"><i data-lucide="pie-chart"></i></div>
+                    <h3><span class="gradient-text">Financial Advisory</span></h3>
+                    <p>Strategic financial consulting to help you navigate mergers, acquisitions, restructuring, and
+                        long-term capital planning.</p>
+                    <a href="#contact" class="learn-more">Learn more <i data-lucide="arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="financial-bg-animated">
+            <div class="ledger-pattern"></div>
+            <div id="aboutIcons" class="floating-elements-container"></div>
+            <canvas id="aboutCanvas" class="network-canvas"></canvas>
+        </div>
+        <div class="container about-container">
+            <div class="about-image fade-in">
+                <div class="image-placeholder">
+                    <!-- CSS Gradient Placeholder for professional look -->
+                    <div class="gradient-overlay"></div>
+                </div>
+                <div class="experience-badge">
+                    <span class="years">15+</span>
+                    <span class="text">Years of<br>Excellence</span>
+                </div>
+            </div>
+            <div class="about-text fade-in fade-delay-1">
+                <span class="subtitle">Why Choose FinPulse</span>
+                <h2><span class="gradient-text">Your Financial Health is Our Top Priority</span></h2>
+                <p>At FinPulse, we believe that numbers tell a story. Our team of seasoned professionals doesn't just
+                    manage your accounts; we analyze them to uncover opportunities for growth and efficiency.</p>
+                <p>With deep industry knowledge and a proactive approach, we act as an extension of your
+                    business—providing the insights you need to make confident, informed financial decisions.</p>
+                <ul class="feature-list">
+                    <li><i data-lucide="check-circle-2"></i> Dedicated account managers</li>
+                    <li><i data-lucide="check-circle-2"></i> Proactive tax saving strategies</li>
+                    <li><i data-lucide="check-circle-2"></i> Technology-driven reporting</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container contact-container fade-in">
+            <div class="contact-info">
+                <h2>Ready to elevate your financial strategy?</h2>
+                <p>Schedule a free consultation with one of our experts today. We'll review your current setup and
+                    discuss how FinPulse can help.</p>
+                <div class="contact-details">
+                    <div class="detail-item">
+                        <i data-lucide="user"></i>
+                        <div>
+                            <h4>Principal CA</h4>
+                            <p>sudhanshu </p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i data-lucide="map-pin"></i>
+                        <div>
+                            <h4>Visit Us</h4>
+                            <p>123 Financial District, Suite 400<br>Metropolis, NY 10001</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i data-lucide="phone"></i>
+                        <div>
+                            <h4>Call Us</h4>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i data-lucide="mail"></i>
+                        <div>
+                            <h4>Email Us</h4>
+                            <p>consult@finpulse.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form-wrapper">
+                <div class="financial-bg-animated">
+                    <div class="ledger-pattern"></div>
+                    <div id="contactIcons" class="floating-elements-container"></div>
+                    <canvas id="contactCanvas" class="network-canvas"></canvas>
+                </div>
+                <form id="contactForm" class="contact-form">
+                    <h3>Request a Consultation</h3>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="john@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service Needed</label>
+                        <select id="service" required>
+                            <option value="" disabled selected>Select a Service</option>
+                            <option value="tax">Tax Preparation & Filing</option>
+                            <option value="audit">Audit & Assurance</option>
+                            <option value="advisory">Financial Advisory</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Submit Request</button>
+                    <p class="form-status" id="formStatus"></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="logo-mark"></span>
+                    FinPulse
+                </div>
+                <p>Empowering businesses with precision, strategy, and unparalleled financial expertise.</p>
+                <div class="social-links">
+                    <a href="#"><i data-lucide="linkedin"></i></a>
+                    <a href="#"><i data-lucide="twitter"></i></a>
+                    <a href="#"><i data-lucide="facebook"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Corporate Tax</a></li>
+                    <li><a href="#">Individual Tax</a></li>
+                    <li><a href="#">Statutory Audit</a></li>
+                    <li><a href="#">Financial Advisory</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container text-center">
+                <p>&copy; 2026 FinPulse CA Services. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal-overlay hidden">
+        <div class="modal-content auth-modal">
+            <button id="closeAuthModal" class="close-modal"><i data-lucide="x"></i></button>
+            <div class="auth-tabs">
+                <button id="tab-login" class="auth-tab active">Login</button>
+                <button id="tab-signup" class="auth-tab">Sign Up</button>
+            </div>
+
+            <div id="login-section" class="auth-section">
+                <h2>Welcome Back</h2>
+                <p>Access your dashboard and financial reports.</p>
+
+                <div class="social-login">
+                    <button class="btn btn-social google-btn" id="google-login-btn">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                        Login with Google
+                    </button>
+                </div>
+
+                <div class="divider"><span>OR</span></div>
+
+                <form id="email-login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" placeholder="email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login to Account</button>
+                </form>
+
+                <div class="divider"><span>Alternatively</span></div>
+
+                <button class="btn btn-secondary btn-block" id="phone-login-trigger">
+                    <i data-lucide="phone"></i> Login with Phone Number
+                </button>
+            </div>
+
+            <div id="signup-section" class="auth-section hidden">
+                <h2>Create Account</h2>
+                <p>Join FinPulse for expert financial management.</p>
+                <form id="email-signup-form">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" placeholder="email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="Min 8 characters" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create Professional Account</button>
+                </form>
+            </div>
+
+            <!-- Phone Login View (Initially Hidden) -->
+            <div id="phone-section" class="auth-section hidden">
+                <button id="back-to-login" class="btn btn-ghost btn-sm"><i data-lucide="arrow-left"></i> Back</button>
+                <h2>Phone Login</h2>
+                <p>Enter your phone number to receive an OTP.</p>
+                <form id="phone-auth-form">
+                    <div class="form-group">
+                        <label for="phone-number">Phone Number</label>
+                        <div class="phone-input">
+                            <span class="country-code">+91</span>
+                            <input type="tel" id="phone-number" placeholder="9876543210" pattern="[0-9]{10}" required>
+                        </div>
+                    </div>
+                    <div id="recaptcha-container"></div>
+                    <button type="submit" id="send-otp-btn" class="btn btn-primary btn-block">Send OTP</button>
+                </form>
+
+                <form id="otp-verify-form" class="hidden">
+                    <div class="form-group">
+                        <label for="otp-code">Verification Code</label>
+                        <input type="text" id="otp-code" placeholder="6-digit code" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Verify & Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Standard version for scripts) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="scripts/auth.js"></script>
+    <!-- Lucide Icons Script -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="scripts/main.js"></script>
+</body>
+
+</html>
