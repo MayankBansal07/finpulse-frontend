@@ -3,7 +3,10 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const API_URL = 'https://finpulse-backend-3tz1.onrender.com/api';
+    // Dynamically set API URL based on environment
+    const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        ? 'http://localhost:5000/api' 
+        : 'https://finpulse-backend-3tz1.onrender.com/api';
 
     // UI Elements
     const loginBtn = document.getElementById('loginBtn');
@@ -17,8 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const userStr = localStorage.getItem('user');
         
         if (token && userStr) {
-            const user = JSON.parse(userStr);
-            updateUIForLoggedInUser(user);
+            try {
+                const user = JSON.parse(userStr);
+                updateUIForLoggedInUser(user);
+            } catch (e) {
+                localStorage.removeItem('user');
+            }
         }
     };
 
@@ -41,11 +48,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Login Form Submission
     if (exactLoginForm) {
+        // Toggle Password Visibility (using delegation to handle Lucide icon replacement)
+        exactLoginForm.addEventListener('click', (e) => {
+            const eyeIcon = e.target.closest('.input-action-icon');
+            if (eyeIcon) {
+                const passwordInput = exactLoginForm.querySelector('input[placeholder="••••••••"]');
+                if (passwordInput) {
+                    const isPassword = passwordInput.getAttribute('type') === 'password';
+                    passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                    
+                    // Toggle Lucide icon attribute
+                    const newIconName = isPassword ? 'eye-off' : 'eye';
+                    
+                    // If the eyeIcon itself is an <i> or <svg>, update it
+                    eyeIcon.setAttribute('data-lucide', newIconName);
+                    
+                    // Refresh Lucide icons
+                    if (window.lucide) {
+                        window.lucide.createIcons();
+                    }
+                }
+            }
+        });
+
         exactLoginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const emailInput = exactLoginForm.querySelector('input[type="email"]').value;
-            const passwordInput = exactLoginForm.querySelector('input[type="password"]').value;
+            const currentPasswordInput = exactLoginForm.querySelector('input[style*="password"], input[type="password"], input[type="text"]').value;
             const submitBtn = exactLoginForm.querySelector('button[type="submit"]');
             
             const originalText = submitBtn.innerHTML;
@@ -58,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email: emailInput, password: passwordInput })
+                    body: JSON.stringify({ email: emailInput, password: currentPasswordInput })
                 });
 
                 const data = await response.json();

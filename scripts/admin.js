@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const API_URL = 'https://finpulse-backend-3tz1.onrender.com/api';
+    const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        ? 'http://localhost:5000/api' 
+        : 'https://finpulse-backend-3tz1.onrender.com/api';
     const token = localStorage.getItem('token');
     const userStr = localStorage.getItem('user');
 

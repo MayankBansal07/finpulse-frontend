@@ -315,7 +315,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 message: document.getElementById('message').value
             };
 
-            fetch("https://finpulse-backend-3tz1.onrender.com/contact", {
+            const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+                ? 'http://localhost:5000' 
+                : 'https://finpulse-backend-3tz1.onrender.com';
+
+            fetch(`${API_BASE}/contact`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
