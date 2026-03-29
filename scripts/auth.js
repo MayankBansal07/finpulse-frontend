@@ -1,236 +1,130 @@
-(function () {
-    /**
-     * FinPulse Auth Logic
-     * Handles Real Firebase Authentication
-     */
+/**
+ * FinPulse Auth Logic (Custom Backend via Render & MongoDB)
+ */
 
-    // --- FIREBASE CONFIGURATION ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyBl-TuyS_j44yLU_YaDxt3Z-By--pK-b1s",
-        authDomain: "finpluse-68f04.firebaseapp.com",
-        projectId: "finpluse-68f04",
-        storageBucket: "finpluse-68f04.firebasestorage.app",
-        messagingSenderId: "414703875046",
-        appId: "1:414703875046:web:d9314ee42f2bdbe5e21c27",
-        measurementId: "G-9M0YNZRXVD"
+document.addEventListener('DOMContentLoaded', () => {
+    const API_URL = 'https://finpulse-backend-3tz1.onrender.com/api';
+
+    // UI Elements
+    const loginBtn = document.getElementById('loginBtn');
+    const loginOverlay = document.getElementById('loginOverlay');
+    const closeLoginBtn = document.getElementById('closeLoginBtn');
+    const exactLoginForm = document.getElementById('exact-login-form');
+    
+    // Check if user is already logged in
+    const checkAuthState = () => {
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
+        
+        if (token && userStr) {
+            const user = JSON.parse(userStr);
+            updateUIForLoggedInUser(user);
+        }
     };
 
-    // Initialize Firebase
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    const auth = firebase.auth();
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-
-    // Elements
-    const loginBtn = document.getElementById('loginBtn');
-    const authModal = document.getElementById('authModal');
-    const closeAuthModal = document.getElementById('closeAuthModal');
-    const userProfile = document.getElementById('userProfile');
-    const userNameDisplay = document.getElementById('userName');
-    const logoutBtn = document.getElementById('logoutBtn');
-
-    const tabLogin = document.getElementById('tab-login');
-    const tabSignup = document.getElementById('tab-signup');
-    const loginSection = document.getElementById('login-section');
-    const signupSection = document.getElementById('signup-section');
-    const phoneSection = document.getElementById('phone-section');
-
-    const phoneLoginTrigger = document.getElementById('phone-login-trigger');
-    const backToLogin = document.getElementById('back-to-login');
-    const phoneAuthForm = document.getElementById('phone-auth-form');
-    const otpVerifyForm = document.getElementById('otp-verify-form');
-
-    // UI Logic ---
-
     // Open Modal
-    if (loginBtn) {
-        loginBtn.addEventListener('click', () => {
-            authModal.classList.remove('hidden');
+    if (loginBtn && loginOverlay) {
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginOverlay.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-            // Render reCAPTCHA if not already rendered
-            if (window.recaptchaVerifier) {
-                window.recaptchaVerifier.render().catch(console.error);
-            }
         });
     }
 
     // Close Modal
-    const closeModal = () => {
-        authModal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
+    if (closeLoginBtn && loginOverlay) {
+        closeLoginBtn.addEventListener('click', () => {
+            loginOverlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        });
+    }
 
-        // Reset Views to default (Login section visible)
-        loginSection.classList.remove('hidden');
-        signupSection.classList.add('hidden');
-        phoneSection.classList.add('hidden');
+    // Login Form Submission
+    if (exactLoginForm) {
+        exactLoginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const emailInput = exactLoginForm.querySelector('input[type="email"]').value;
+            const passwordInput = exactLoginForm.querySelector('input[type="password"]').value;
+            const submitBtn = exactLoginForm.querySelector('button[type="submit"]');
+            
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Signing in...';
+            submitBtn.disabled = true;
 
-        // Reset Phone views
-        phoneAuthForm.classList.remove('hidden');
-        otpVerifyForm.classList.add('hidden');
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: emailInput, password: passwordInput })
+                });
 
-        tabLogin.classList.add('active');
-        tabSignup.classList.remove('active');
-        if (window.lucide) window.lucide.createIcons();
-    };
+                const data = await response.json();
 
-    if (closeAuthModal) closeAuthModal.addEventListener('click', closeModal);
-    window.addEventListener('click', (e) => {
-        if (e.target === authModal) closeModal();
-    });
+                if (!response.ok) {
+                    throw new Error(data.message || 'Login failed');
+                }
 
-    // Tab Switching
-    if (tabLogin) tabLogin.addEventListener('click', () => {
-        tabLogin.classList.add('active');
-        tabSignup.classList.remove('active');
-        loginSection.classList.remove('hidden');
-        signupSection.classList.add('hidden');
-        phoneSection.classList.add('hidden');
-    });
+                // Success! Store token and user
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify({
+                    id: data._id,
+                    name: data.name,
+                    email: data.email,
+                    role: data.role
+                }));
 
-    if (tabSignup) tabSignup.addEventListener('click', () => {
-        tabSignup.classList.add('active');
-        tabLogin.classList.remove('active');
-        signupSection.classList.remove('hidden');
-        loginSection.classList.add('hidden');
-        phoneSection.classList.add('hidden');
-    });
+                // Reset modal and update UI
+                loginOverlay.classList.add('hidden');
+                document.body.style.overflow = '';
+                exactLoginForm.reset();
+                
+                updateUIForLoggedInUser({ name: data.name, role: data.role });
 
-    // Phone View Switch
-    if (phoneLoginTrigger) phoneLoginTrigger.addEventListener('click', () => {
-        loginSection.classList.add('hidden');
-        phoneSection.classList.remove('hidden');
-    });
+                // Redirect admins to dashboard
+                if (data.role === 'admin') {
+                    window.location.href = 'admin.html';
+                } else {
+                    alert(`Welcome back, ${data.name}! Your client profile is ready.`);
+                }
 
-    if (backToLogin) backToLogin.addEventListener('click', () => {
-        phoneSection.classList.add('hidden');
-        loginSection.classList.remove('hidden');
-        phoneAuthForm.classList.remove('hidden');
-        otpVerifyForm.classList.add('hidden');
-    });
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
 
     // UI Updates
     const updateUIForLoggedInUser = (user) => {
-        if (loginBtn) loginBtn.classList.add('hidden');
-        if (userProfile) {
-            userProfile.classList.remove('hidden');
-            userNameDisplay.textContent = user.displayName || user.phoneNumber || user.email.split('@')[0];
-        }
-        if (window.lucide) window.lucide.createIcons();
-    };
-
-    const handleLogoutUI = () => {
-        if (loginBtn) loginBtn.classList.remove('hidden');
-        if (userProfile) userProfile.classList.add('hidden');
-        if (window.lucide) window.lucide.createIcons();
-    };
-
-    // Firebase Listeners ---
-
-    // Auth state observer
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            updateUIForLoggedInUser(user);
-            closeModal();
-        } else {
-            handleLogoutUI();
-        }
-    });
-
-    // Email Login
-    document.getElementById('email-login-form')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-
-        auth.signInWithEmailAndPassword(email, password)
-            .catch(error => alert(error.message));
-    });
-
-    // Email Signup
-    document.getElementById('email-signup-form')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('signup-email').value;
-        const password = document.getElementById('signup-password').value;
-        const name = document.getElementById('signup-name').value;
-
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((result) => {
-                return result.user.updateProfile({ displayName: name });
-            })
-            .catch(error => alert(error.message));
-    });
-
-    // Google Login
-    document.getElementById('google-login-btn')?.addEventListener('click', () => {
-        auth.signInWithPopup(googleProvider)
-            .catch(error => alert(error.message));
-    });
-
-    // Logout
-    if (logoutBtn) logoutBtn.addEventListener('click', () => {
-        auth.signOut();
-    });
-
-    // --- Phone Auth Logic ---
-    // Initialize reCAPTCHA - setting to 'normal' size so we can see it for debugging
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        'size': 'normal',
-        'callback': (response) => {
-            console.log("reCAPTCHA verified");
-        }
-    });
-
-    let confirmationResult = null;
-
-    phoneAuthForm?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const sendBtn = document.getElementById('send-otp-btn');
-        const numberInput = document.getElementById('phone-number').value;
-
-        // Normalize phone number: ensure it starts with +91 and has 10 digits
-        const phoneNumber = "+91" + numberInput.trim().slice(-10);
-
-        const appVerifier = window.recaptchaVerifier;
-
-        if (sendBtn) {
-            sendBtn.innerHTML = "Sending...";
-            sendBtn.disabled = true;
-        }
-
-        console.log("Starting phone auth for:", phoneNumber);
-
-        auth.signInWithPhoneNumber(phoneNumber, appVerifier)
-            .then((result) => {
-                console.log("SMS Sent successfully");
-                confirmationResult = result;
-                phoneAuthForm.classList.add('hidden');
-                otpVerifyForm.classList.remove('hidden');
-            }).catch((error) => {
-                console.error("Phone Auth Error:", error);
-                alert("Error: " + error.message);
-                if (sendBtn) {
-                    sendBtn.innerHTML = "Send OTP";
-                    sendBtn.disabled = false;
+        if (loginBtn) {
+            // Replace Login button with User Profile / Dashboard button
+            loginBtn.textContent = user.role === 'admin' ? 'Admin Dashboard' : `Hi, ${user.name.split(' ')[0]}`;
+            loginBtn.classList.add('btn-primary');
+            loginBtn.classList.remove('btn-ghost');
+            
+            // Override click to go to dashboard or logout
+            const clone = loginBtn.cloneNode(true);
+            loginBtn.parentNode.replaceChild(clone, loginBtn);
+            
+            clone.addEventListener('click', () => {
+                if (user.role === 'admin') {
+                    window.location.href = 'admin.html';
+                } else {
+                    if(confirm("Do you want to logout?")) {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        window.location.reload();
+                    }
                 }
-                if (window.grecaptcha) grecaptcha.reset();
             });
-    });
-
-    otpVerifyForm?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const code = document.getElementById('otp-code').value;
-        if (confirmationResult) {
-            confirmationResult.confirm(code)
-                .then((result) => {
-                    updateUIForLoggedInUser(result.user);
-                    closeModal();
-                })
-                .catch(error => {
-                    console.error("Verification Error:", error);
-                    alert("Invalid Code: " + error.message);
-                });
         }
-    });
+    };
 
-})();
+    // Run auth check on load
+    checkAuthState();
+});

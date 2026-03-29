@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinPulse | Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/lucide@latest/dist/umd/lucide.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .admin-section { padding: 8rem 0 4rem; min-height: 100vh; background-color: var(--bg-light); }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        
+        /* Table Styles */
+        .data-table-wrapper { overflow-x: auto; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1rem; }
+        .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .data-table th, .data-table td { padding: 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .data-table th { font-family: 'Outfit', sans-serif; font-weight: 600; color: var(--text-dark); background: rgba(0,0,0,0.02); }
+        .data-table tr:hover { background: rgba(0,0,0,0.01); }
+        
+        .status-badge { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; }
+        .status-badge.new { background: #e3f2fd; color: #1976d2; }
+        .status-badge.admin { background: #fce4ec; color: #c2185b; }
+        .status-badge.client { background: #e8f5e9; color: #2e7d32; }
+
+        .form-group-inline { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-end;}
+    </style>
+</head>
+<body>
+    <header id="header" class="navbar scrolled">
+        <div class="container nav-content">
+            <a href="index.html" class="logo" style="text-decoration: none;">
+                <img src="assets/finpulse_logo.jpg" alt="FinPulse Logo" style="height: 48px; width: 56px; object-fit: cover; border-radius: 8px;">
+                <span class="logo-text">Fin<span class="text-primary">Pulse</span> Admin</span>
+            </a>
+            <div class="nav-actions">
+                <button id="logoutAdminBtn" class="btn btn-ghost nav-login">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="admin-section">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Admin <span class="text-primary">Dashboard</span></h2>
+                <div style="font-size: 1.1rem" id="adminWelcome"></div>
+            </div>
+
+            <div class="dashboard-grid">
+                
+                <!-- Consultation Form Submissions -->
+                <div>
+                    <h3>Recent Consultations</h3>
+                    <p style="margin-bottom: 1rem; color: #666;">Forms submitted from the contact page.</p>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Service</th>
+                                    <th>Message</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="consultationsTableBody">
+                                <tr><td colspan="7">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Create Client / View Clients -->
+                <div style="margin-top: 2rem;">
+                    <h3>Manage Clients</h3>
+                    
+                    <!-- Add form inline -->
+                    <div class="glass-card" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                        <h4>Create New Client</h4>
+                        <form id="createClientForm" class="form-group-inline" style="flex-wrap: wrap;">
+                            <div class="form-group" style="margin: 0; min-width: 200px; flex: 1;">
+                                <label>Name</label>
+                                <input type="text" id="newClientName" required>
+                            </div>
+                            <div class="form-group" style="margin: 0; min-width: 200px; flex: 1;">
+                                <label>Email</label>
+                                <input type="email" id="newClientEmail" required>
+                            </div>
+                            <div class="form-group" style="margin: 0; min-width: 150px; flex: 1;">
+                                <label>Phone</label>
+                                <input type="text" id="newClientPhone">
+                            </div>
+                            <div class="form-group" style="margin: 0; min-width: 150px; flex: 1;">
+                                <label>Password</label>
+                                <input type="text" id="newClientPassword" placeholder="Default: client123">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="height: 48px;"><i data-lucide="plus"></i> Add</button>
+                        </form>
+                    </div>
+
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Joined</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientsTableBody">
+                                <tr><td colspan="5">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="scripts/admin.js"></script>
+</body>
+</html>
