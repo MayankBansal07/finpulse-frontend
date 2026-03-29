@@ -15,7 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const formStatus = document.getElementById('formStatus');
 
     // --- Sticky Header ---
+    const isHomePage = document.querySelector('.hero') !== null;
+    
+    if (!isHomePage && header) {
+        header.classList.add('scrolled');
+    }
+
     window.addEventListener('scroll', () => {
+        if (!header) return;
+        if (!isHomePage) return; // Keep it solidly styled on inner pages
+        
         if (window.scrollY > 20) {
             header.classList.add('scrolled');
         } else {
